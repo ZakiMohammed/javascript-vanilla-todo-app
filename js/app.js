@@ -42,12 +42,21 @@ const remove = function (e, id) {
 
 const toggleComplete = function (e, id) {
     const task = tasks.find(i => i.id === id);
-    console.log('Toggle', task);
+    const label = e.closest('.form-group').lastElementChild;
+
+    if (task.completed) {
+        task.completed = false;
+        label.innerHTML = task.title;
+    } else {
+        task.completed = true;
+        label.innerHTML = `<del>${task.title}</del>`;
+    }
 };
 
 // listeners
-add.addEventListener('click', function () {
-    
+add.addEventListener('click', function (e) {
+    // e.preventDefault(); // when using form element
+
     // undefined or null or empty string or 0
     if (!title.value) {
         alert('Please enter task title');
@@ -78,6 +87,11 @@ add.addEventListener('click', function () {
 
     title.value = '';
 });
+title.addEventListener('keyup', function (e) {
+    if (e.key === 'Enter') {
+        add.click();
+    }
+})
 clearAll.addEventListener('click', function () {
     tasks = [];
     toggleContainer();
